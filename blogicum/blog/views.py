@@ -50,26 +50,21 @@ POSTS = {post['id']: post for post in posts}
 
 def index(request):
     """Главная страница / Лента записей"""
-    template_name = 'blog/index.html'
-    context = {'posts': posts}
-    return render(request, template_name, context)
+    return render(request, 'blog/index.html', {'posts': posts})
 
 
 def post_detail(request, id):
     """Отображение полного описания выбранной записи"""
-    template_name = 'blog/detail.html'
-    # post = [post for post in posts if post['id'] == id]
-    if not POSTS:
+    if id not in POSTS:
         raise Http404('Вы указали неверный id')
     context = {'post': POSTS[id]}
-    return render(request, template_name, context)
+    return render(request, 'blog/detail.html', context)
 
 
 def category_posts(request, category_slug):
     """Отображение публикаций категории"""
-    template_name = 'blog/category.html'
     sorted_posts = [post for post in posts if post['category']
                     == category_slug]
     context = {'category': category_slug,
                'posts': sorted_posts}
-    return render(request, template_name, context)
+    return render(request, 'blog/category.html', context)
